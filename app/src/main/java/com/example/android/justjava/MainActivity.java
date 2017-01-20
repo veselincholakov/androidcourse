@@ -10,12 +10,24 @@ import java.text.NumberFormat;
 
 public class MainActivity extends AppCompatActivity {
 
-    private int number;
-    private int price= 2;
+    private int number = 0;
+    private int price = 2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+    }
+
+    public void increment(View view){
+        number++;
+        display(number);
+    }
+
+    public void decrement(View view){
+        if(number > 0) {
+            number--;
+            display(number);
+        }
     }
 
     /**
@@ -33,7 +45,6 @@ public class MainActivity extends AppCompatActivity {
      */
     private void display(int number) {
         TextView quantityTextView = (TextView) findViewById(R.id.quantity_text_view);
-        this.number += number;
         quantityTextView.setText("" + this.number);
         displayPrice(this.number*price);
     }
