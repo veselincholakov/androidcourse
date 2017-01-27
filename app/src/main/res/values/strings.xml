@@ -1,4 +1,8 @@
-<resources>
+<resources xmlns:xliffName="http://schemas.android.com/tools">
     <string name="app_name">Just Java</string>
-    <string name="text_name_value">Name</string>
+    <string name="toppings">TOPPINGS</string>
+    <string name="chocolate">Chocolate</string>
+    <string name="oreder_summary_name"><xliffName:g id="name" example="John">%s</xliffName:g> </string>
+    <string name="thank_you">Thank you!</string>
+
 </resources>

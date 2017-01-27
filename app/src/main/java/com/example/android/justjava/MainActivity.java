@@ -1,7 +1,6 @@
 package com.example.android.justjava;
 
 
-import android.content.ClipData;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -12,11 +11,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.text.NumberFormat;
-
 public class MainActivity extends AppCompatActivity {
 
-    private int mNumber = 1;
+    private int mQuantity = 1;
     private String mName;
     private boolean mHasWhippedCream = false;
     private boolean mHasChocolate = false;
@@ -25,22 +22,22 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        display(mNumber);
+        display(mQuantity);
     }
 
     public void increment(View view){
-        if(mNumber >= 100) {
+        if(mQuantity >= 100) {
             Toast.makeText(this, "You cannot order more than 99 coffees!", Toast.LENGTH_SHORT).show();
             return;
         }
-        mNumber++;
-        display(mNumber);
+        mQuantity++;
+        display(mQuantity);
     }
 
     public void decrement(View view){
-        if(mNumber > 1) {
-            mNumber--;
-            display(mNumber);
+        if(mQuantity > 1) {
+            mQuantity--;
+            display(mQuantity);
         } else {
             Toast.makeText(this, "You cannot order less than 1 coffee!", Toast.LENGTH_SHORT).show();
         }
@@ -55,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         intent.setType("text/plain");
         intent.setData(Uri.parse("mailto:"));
         intent.putExtra(Intent.EXTRA_SUBJECT, String.format("Order for %s",mName));
-        intent.putExtra(Intent.EXTRA_TEXT, createOrderSummary(mNumber));
+        intent.putExtra(Intent.EXTRA_TEXT, createOrderSummary(mQuantity));
         if(intent.resolveActivity(getPackageManager()) != null){
             startActivity(Intent.createChooser(intent, "Send email..."));
         }
@@ -66,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void display(int number) {
         TextView quantityTextView = (TextView) findViewById(R.id.quantity_text_view);
-        quantityTextView.setText("" + this.mNumber);
+        quantityTextView.setText("" + this.mQuantity);
     }
 
     private void getName(){
@@ -97,12 +94,17 @@ public class MainActivity extends AppCompatActivity {
         if(mHasChocolate){
             basePrice += 0.20;
         }
-        return basePrice * mNumber;
+        return basePrice * mQuantity;
     }
 
-    private String createOrderSummary(int number){
+    private String createOrderSummary(int quantity){
         float price = calculatePrice();
-
-        return String.format("Name: %s\nAdd whipped cream? - %s\nAdd chocolate? - %s\nQuantity: %d\nTotal: $%.2f\nThank you!", mName, (mHasWhippedCream ? "yes":"no"), (mHasChocolate?"yes":"no"), number,price);
+        String priceMessage = getString(R.string.oreder_summary_name,mName);
+        priceMessage += "\nAdd whipped cream? " + (mHasWhippedCream?"yes":"no");
+        priceMessage += "\nAdd chocolate? " + (mHasChocolate?getString(R.string.yes):getString(R.string.thank_you));
+        priceMessage += "\nQuantity: " + quantity;
+        priceMessage += "\nTotal: " + price;
+        priceMessage += "\n" + getString(R.string.thank_you);
+        return priceMessage;
     }
 }
